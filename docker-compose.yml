@@ -5,8 +5,6 @@ services:
     # ボリュームを設定する（ホスト側ディレクトリ:コンテナ側ボリュームの場所）
     volumes:
       - ./api:/src
-    # expose: 【不要な理由】nginxでLaravel（api）のAPIを呼び出すため
-    #   - 9000
 
   client:
     container_name: client
@@ -14,14 +12,11 @@ services:
     # ホストPCの3000番ポートとコンテナ内の3000番ポートを接続
     ports:
       - "3000:3000" 
-    # 他のコンテナからの通信のため、3000番ポートを設定
-    # expose: 【不要な理由】他のコンテナからアクセスがないため
-    #   - 3000
     volumes:
       - ./client:/src
+      - /src/node_modules
     depends_on:
       - api
-    command: sh -c "npm i && npm run dev"
 
   nginx:
     build: ./docker/nginx
