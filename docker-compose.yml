@@ -1,0 +1,62 @@
+services:
+  api:
+    build: ./docker/api
+    container_name: "api"
+    # ボリュームを設定する（ホスト側ディレクトリ:コンテナ側ボリュームの場所）
+    volumes:
+      - ./api:/src
+    # expose: 【不要な理由】nginxでLaravel（api）のAPIを呼び出すため
+    #   - 9000
+
+  client:
+    container_name: client
+    build: ./docker/client
+    # ホストPCの3000番ポートとコンテナ内の3000番ポートを接続
+    ports:
+      - "3000:3000" 
+    # 他のコンテナからの通信のため、3000番ポートを設定
+    # expose: 【不要な理由】他のコンテナからアクセスがないため
+    #   - 3000
+    volumes:
+      - ./client:/src
+    depends_on:
+      - api
+    command: sh -c "npm i && npm run dev"
+
+  nginx:
+    build: ./docker/nginx
+    container_name: "nginx"
+    # ポートフォワードの指定（ホスト側ポート：コンテナ側ポート）
+    ports:
+      - 80:80
+    # ボリュームを設定する（ホスト側ディレクトリ:コンテナ側ボリュームの場所）
+    volumes:
+      - ./api:/src
+    # サービスの依存関係を指定（nginxをphpに依存させる）
+    depends_on:
+      - api
+
+  mysql:
+    image: mysql:8.0.37
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - db-data:/var/lib/mysql
+      
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+      - mysql
+    environment:
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    ports:
+      - 8080:80
+volumes:
+  db-data:
+
