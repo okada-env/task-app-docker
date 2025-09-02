@@ -97,26 +97,16 @@ VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
 ```
 
-5.  Composer インストール
-```
-docker-compose exec composer install
-```
-
-6.  アプリケーションキーを作成
-```
-php artisan key:generate
-```
-
-7. コンテナの立ち上げ
+6. コンテナの立ち上げ
 ```
 cd ../
 ```
 
 ```
-docker-compose up -d
+docker-compose up -d --build
 ```
 
-8. マイグレーション
+7. マイグレーション
 ```
 docker-compose exec api php artisan migrate
 ```
@@ -131,6 +121,7 @@ docker-compose exec api php artisan migrate
 ```
 docker-compose down 
 ```
+
 
 
 
