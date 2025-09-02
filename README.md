@@ -99,7 +99,7 @@ VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
 5.  Composer インストール
 ```
-composer install
+docker-compose exec composer install
 ```
 
 6.  アプリケーションキーを作成
@@ -131,6 +131,7 @@ docker-compose exec api php artisan migrate
 ```
 docker-compose down 
 ```
+
 
 
 
