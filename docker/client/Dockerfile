@@ -8,5 +8,10 @@ RUN apk update && \
 
 WORKDIR /src
 
+COPY client/package*.json ./
+COPY client/ .
+
+RUN npm install 
+
 # Vue.jsの起動
 CMD ["npm", "run", "dev"] 

@@ -8,7 +8,9 @@ services:
 
   client:
     container_name: client
-    build: ./docker/client
+    build:
+      context: .
+      dockerfile: docker/client/Dockerfile
     # ホストPCの3000番ポートとコンテナ内の3000番ポートを接続
     ports:
       - "3000:3000" 
@@ -54,4 +56,5 @@ services:
       - 8080:80
 volumes:
   db-data:
+  
 
