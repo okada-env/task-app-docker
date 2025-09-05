@@ -14,13 +14,11 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 WORKDIR /src
 
 # Copy composer files first for better layer caching
-COPY composer.json composer.lock ./
+COPY api/composer.json api/composer.lock ./
+COPY api/ .
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Copy the rest of the application code
-COPY . .
 
 # Set proper permissions
 RUN chown -R www-data:www-data /src && \

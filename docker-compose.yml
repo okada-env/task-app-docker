@@ -1,10 +1,13 @@
 services:
   api:
-    build: ./docker/api
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
     container_name: "api"
     # ボリュームを設定する（ホスト側ディレクトリ:コンテナ側ボリュームの場所）
     volumes:
       - ./api:/src
+      - /src/vendor
 
   client:
     container_name: client
