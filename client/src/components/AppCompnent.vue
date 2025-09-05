@@ -18,7 +18,7 @@ provide('tasks',state); //provideはsetup直下で使用すること。
 
 <template>
   <div>
-    <h1>タスク管理アプリ</h1>
+    <h1>タスク管理アプリ ホーム画面</h1>
   </div>
 </template>
 

@@ -4,7 +4,6 @@ import { ref , onMounted, provide} from 'vue'
 const submitTasks = ref([])
 
 import HeaderComponent from './components/HeaderComponent.vue'
-import TaskListComponent from './components/TaskListComponent.vue'
 
 const getTasks = ()=>{
   axios.get('/api/tasks').then((res) =>{
