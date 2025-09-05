@@ -1,42 +1,43 @@
-<template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-sm-6">
-                <form @submit.prevent="submit">
-                    <div class="form-group row">
-                        <label for="title" class="col-sm-3 col-form-label">Title</label>
-                        <input type="text" class="col-sm-9 form-control" id="title" v-model="tasks.title">
-                    </div>
-                    <div class="form-group row">
-                        <label for="content" class="col-sm-3 col-form-label">Content</label>
-                        <input type="text" class="col-sm-9 form-control" id="content" v-model="tasks.content">
-                    </div>
-                    <div class="form-group row">
-                        <label for="person-in-charge" class="col-sm-3 col-form-label">Person In Charge</label>
-                        <input type="text" class="col-sm-9 form-control" id="person-in-charge" v-model="tasks.person_in_charge">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-         </div>
-     </div>
- </template>
- 
- <script>
-    import axios from 'axios';
-    export default {
-    data: function() {
-    return {
-        tasks: {}
+ <script setup>
+import { reactive } from 'vue';
+import axios from 'axios';
+import {useRouter} from 'vue-router';
+const router = useRouter();
+
+const task = reactive({
+  title: '',
+  content: '',
+  person_in_charge: '',
+})
+const onSubmit =async (e)=>{
+  await axios.post('/api/tasks',task).then((res)=>{
+    if(res){
+      router.go(-1); 
+    }else{
+     console.log("ERR");
     }
-    },
-    methods:{
-        submit(){
-            axios.post('/api/tasks', this.tasks)
-            .then((res) => {
-                this.$router.push({name: 'task.list'});
-            });
-        }
-    },
-   }
- </script>
+  })
+}
+
+</script>
+
+
+<template>
+    <div>
+        <div class="container">
+            <div class="form-group row">
+                <label for="title" class="col-sm-3 col-form-label">Title</label>
+                <input type="text" v-model="task.title">
+            </div>
+            <div class="form-group row">
+                <label for="content" class="col-sm-3 col-form-label">Content</label>
+                <input type="text" v-model="task.content">
+            </div>
+            <div class="form-group row">
+                <label for="person-in-charge" class="col-sm-3 col-form-label">Person In Charge</label>
+                <input type="text" v-model="task.person_in_charge">
+            </div>
+            <button class="btn btn-primary" v-on:click="onSubmit">登録</button>
+         </div>
+    </div>
+</template>

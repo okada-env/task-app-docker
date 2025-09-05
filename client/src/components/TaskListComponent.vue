@@ -1,71 +1,50 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+import {useRouter} from 'vue-router';
+const router = useRouter();
+const tasks = ref([])
+
+const Tasks = async () => {
+  const res = await axios.get('/api/tasks')
+  tasks.value = res.data
+}
+
+onMounted(async () => {
+  await Tasks()
+})
+
+const deleteTask = (sel_id)=>{
+  axios.delete(`/api/tasks/${sel_id}`).then((res)=>{
+    if(res){
+      Tasks(); 
+    }
+  })
+}
+
+const editTask = (index) => {
+  router.push(`/tasks/${tasks.value[index].id}/edit`)
+}
+
+const showTask = (index) => {
+  router.push(`/tasks/${tasks.value[index].id}`)
+}
+</script>
+
 <template>
    <div class="container">
-     <table class="table table-hover">
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Content</th>
-            <th scope="col">Person In Charge</th>
-            <th scope="col">Show</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-            
-            <tr v-for="(task, index) in tasks" :key="index">
-                <th scope="row">{{ task.id }}</th>
-                <td>{{task.title}}</td>
-                <td>{{task.content}}</td>
-                <td>{{task.person_in_charge}}</td>
-                <td>
-                    <router-link v-bind:to="{name: `task.show`, params:{taskId: task.id}}">
-                        <button class="btn btn-primary">Show</button>
-                    </router-link>
-                </td>
-                <td>
-                    <router-link v-bind:to="{name: `task.edit`, params:{taskId: task.id}}">
-                    <button class="btn btn-primary">Edit</button>
-                    </router-link>
-                </td>
-                <td>
-                    <button class="btn btn-danger" v-on:click="deleteTask(task.id)">Delete</button>
-                </td>
-            </tr>
-        </tbody>
-   </table>
+         <ul> 
+            <h2>タスク一覧</h2>
+            <li v-for="(task, i) in tasks" v-bind:key="i">
+                タスク名：{{ task.title }}
+                <button v-on:click="showTask(i)">詳細</button>
+                <button v-on:click="editTask(i)">編集</button>
+                <button v-on:click="deleteTask(task.id)">Delete</button>
+            </li>
+         </ul>
    </div>
 </template>
-   
-   <script>
-   import axios from 'axios';
-   export default {
-    data: function() {
-        return {
-            tasks: []
-        }
-    },
-    methods:{
-        getTasks(){
-            axios.get('/api/tasks')
-            .then((res)=>{
-                this.tasks = res.data;
-            });
-        },
-        deleteTask(id){
-            axios.delete(`/api/tasks/` + id)
-            .then((res)=>{
-                this.getTasks();
-            });
-        }
-    },
-    mounted(){  
-        this.getTasks();
-    }
-   
-   }
-   </script>
    
    <style>
    

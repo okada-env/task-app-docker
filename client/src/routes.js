@@ -1,3 +1,4 @@
+import AppCompnent from "./components/AppCompnent.vue";
 import TaskListComponent from "./components/TaskListComponent.vue";
 import TaskShowComponent from "./components/TaskShowComponent.vue";
 import TaskCreateComponent from "./components/TaskCreateComponent.vue";
@@ -7,8 +8,8 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
     {
         path: "/",
-        component: TaskListComponent,
-        name: "task.list",
+        name: "home",
+        component: AppCompnent
     },
     {
         path: '/tasks',

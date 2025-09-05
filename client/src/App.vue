@@ -1,20 +1,33 @@
+<script setup>
+import axios from 'axios';
+import { ref , onMounted, provide} from 'vue'
+const submitTasks = ref([])
+
+import HeaderComponent from './components/HeaderComponent.vue'
+import TaskListComponent from './components/TaskListComponent.vue'
+
+const getTasks = ()=>{
+  axios.get('/api/tasks').then((res) =>{
+    submitTasks.value = res.data;
+  })  
+}
+onMounted(async()=>{
+  await getTasks();
+})
+
+const deleteTask = (index) => {
+  submitTasks.value.splice(index, 1)
+}
+</script>
+
+
 <template>
-  <div id="app">
-    <header-component />
-    <router-view />
+  <div>
+    <HeaderComponent />
+    <router-view v-bind:submitTasks="submitTasks" v-bind:deleteTask="deleteTask" />
   </div>
 </template>
 
-<script>
-import TaskListComponent from './components/TaskListComponent.vue'
-
-export default {
-  name: 'App',
-  components: {
-    TaskListComponent
-  }
-}
-</script>
 
 <style>
 #app {

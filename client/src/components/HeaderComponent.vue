@@ -1,3 +1,8 @@
+<script>
+export default {}
+</script>
+
+
 <template>
     <div class="container-fluid bg-dark mb-3">
         <div class="container">
@@ -15,7 +20,3 @@
         </div>
     </div>
 </template>
-
-<script>
-export default {}
-</script>
