@@ -96,12 +96,8 @@ VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
 VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
 ```
-6. vender ファイルをローカルで立ち上げ
-```
-composer install
-```
 
-7. コンテナの立ち上げ
+6. コンテナの立ち上げ
 ```
 cd ../
 ```
@@ -125,6 +121,7 @@ docker-compose exec api php artisan migrate
 ```
 docker-compose down 
 ```
+
 
 
 
